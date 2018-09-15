@@ -25,7 +25,7 @@ var value = process.argv[3];  //search value
 
 const divider = "\n************************************************************************************\n\n";
 
-//Bank Example exericse switch
+//used from Bank exercise activty example
 
 // node liri.js concert-this Beyonce
 // node liri.js spotify-this-song
@@ -91,13 +91,22 @@ function concertThis(value) {
      for(var i=0; i < results.length; i++) {
     
        var date =results[i].datetime;
+       var formattedDataArray = [];
        var newDate = (moment(date).format("MM/DD/YYYY hh:mm a"));
-         console.log(newDate + " " + results[i].venue.name +" " + results[i].venue.city + " " + results[i].venue.region + " " + results[i].venue.country);
+         //console.log(newDate + " " + results[i].venue.name +" " + results[i].venue.city + " " + results[i].venue.region + " " + results[i].venue.country);
+
+        formattedData = [newDate + " " + results[i].venue.name +", " + results[i].venue.city + " " + results[i].venue.region + " " + results[i].venue.country].join("\n");
+        //.join("\n");
+        //formattedDataArray.push(formattedData);
+        //saveFile(formattedData + divider);  
+        saveFile(formattedData);  
    
     }
-    console.log("********************************************************");
+    
+    //console.log("********************************************************");
   };
 });
+
 
 
 }
@@ -173,10 +182,8 @@ function movieThis(value) {
 
 //read from file and return 
 // node liri.js do-what-it-says
+// There are three random files that be used to test. 
 function doWhatItSays() {
-
-// fs is a core Node package for reading and writing files
-//var fs = require("fs");
 
 // read random#.txt files as utf8
 fs.readFile("random.txt", "utf8", function(error, data) {
@@ -193,13 +200,12 @@ fs.readFile("random.txt", "utf8", function(error, data) {
 
   switch(action) { 
     case "concert-this":
-      value = value.substr(1).slice(0, -1);   //Added to remove char from begining and end for concert search
+      value = value.substr(1).slice(0, -1);   //Added to remove char from begining and end for concert search as without it search fails
       concertThis(value);
       break;
     case "spotify-this-song":
       spotifyThisSong(value);
       break;
-    
     case "movie-this":
       movieThis(value);
       break;
