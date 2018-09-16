@@ -87,23 +87,20 @@ function concertThis(value) {
     // var newDate = (moment(date).format("MM/DD/YYYY hh:mm a"));
     //   console.log(`${newDate} ` + `${event.venue.name} ` + `${event.venue.city} ${event.venue.region} ${event.venue.country}`);
        
-    //Worked with Tutor Edna  use moment to convert format include date and time
+    // Worked with tutor to resolve countent of array. 
+    var formattedDataArray = [];
+
      for(var i=0; i < results.length; i++) {
     
        var date =results[i].datetime;
-       var formattedDataArray = [];
-       var newDate = (moment(date).format("MM/DD/YYYY hh:mm a"));
+       var newDate = (moment(date).format("MM/DD/YYYY hh:mm a")); //Worked with Tutor Edna  use moment to convert format include date and time
          //console.log(newDate + " " + results[i].venue.name +" " + results[i].venue.city + " " + results[i].venue.region + " " + results[i].venue.country);
 
-        formattedData = [newDate + " " + results[i].venue.name +", " + results[i].venue.city + " " + results[i].venue.region + " " + results[i].venue.country].join("\n");
-        //.join("\n");
-        //formattedDataArray.push(formattedData);
-        //saveFile(formattedData + divider);  
-        saveFile(formattedData);  
-   
-    }
+        formattedData = [newDate + " " + results[i].venue.name +", " + results[i].venue.city + " " + results[i].venue.region + " " + results[i].venue.country].join("\n\n");
+        formattedDataArray.push(formattedData); // Add results to Array to be saved to local file and for console
+         }
+     saveFile(formattedDataArray.join("\n") + divider);  
     
-    //console.log("********************************************************");
   };
 });
 
