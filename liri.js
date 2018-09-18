@@ -23,11 +23,12 @@ var spotify = new Spotify(keys.spotify);
 var action = process.argv[2]; //command switch
 var value = process.argv[3];  //search value
 
+
 const divider = "\n************************************************************************************\n\n";
 
-//used from Bank exercise activty example
+//used from Bank exercise activty switch example
 
-// node liri.js concert-this Beyonce
+// node liri.js concert-this 
 // node liri.js spotify-this-song
 // node liri.js movie-this 
 // node liri.js do-what-it-says
@@ -50,7 +51,6 @@ case "do-what-it-says":
   break;
 };
 
-
 //example from tv-better.js exercise  save to local file
 function saveFile(content){
   fs.appendFile("log.txt", content, function(err) {
@@ -59,9 +59,8 @@ function saveFile(content){
   });
 }
 
-
 //search and return concert-this
-//node liri.js concert-this Beyonce
+//node liri.js concert-this default Beyonce is used
 function concertThis(value) {
 
   //https://app.swaggerhub.com/api/Bandsintown/PublicAPI/3.0.0
@@ -77,16 +76,8 @@ function concertThis(value) {
     
   if (!error && response.statusCode === 200) {
     results = JSON.parse(body);
-    //console.log(results);
-    console.log(results.length);
     console.log("*******Date************Venue*************** Location********");
-    
-    //forEach loop option
-    // results.forEach(function(event) {
-    // var date =event.datetime;
-    // var newDate = (moment(date).format("MM/DD/YYYY hh:mm a"));
-    //   console.log(`${newDate} ` + `${event.venue.name} ` + `${event.venue.city} ${event.venue.region} ${event.venue.country}`);
-       
+      
     // Worked with tutor to resolve countent of array. 
     var formattedDataArray = [];
 
@@ -94,22 +85,18 @@ function concertThis(value) {
     
        var date =results[i].datetime;
        var newDate = (moment(date).format("MM/DD/YYYY hh:mm a")); //Worked with Tutor Edna  use moment to convert format include date and time
-         //console.log(newDate + " " + results[i].venue.name +" " + results[i].venue.city + " " + results[i].venue.region + " " + results[i].venue.country);
-
         formattedData = [newDate + " " + results[i].venue.name +", " + results[i].venue.city + " " + results[i].venue.region + " " + results[i].venue.country].join("\n\n");
         formattedDataArray.push(formattedData); // Add results to Array to be saved to local file and for console
-         }
+    }
      saveFile(formattedDataArray.join("\n") + divider);  
     
   };
 });
 
-
-
 }
 
 //search and return spotify-this-song
-// node liri.js spotify-this-song
+//node liri.js spotify-this-song
 function spotifyThisSong(value) {
   if (value == null ) {
     value = "The Sign";
@@ -122,7 +109,7 @@ function spotifyThisSong(value) {
     }
 
     var results = data.tracks.items;
-    // showData ends up being the string containing the show data we will print to the console
+    //showData ends up being the string containing the show data we will print to the console
     //example from tv-better.js exercise 
     formattedData = [
     "Artist(s): " + results[0].artists[0].name,
@@ -130,15 +117,14 @@ function spotifyThisSong(value) {
     "Preview Link: " + results[0].preview_url,
     "Album: " + results[0].album.name,
     ].join("\n\n");
-  //  console.log(output);
+
     saveFile(formattedData + divider);  
   });
-    
-
+ 
 }
 
 //search and return movie-this
-// node liri.js movie-this 
+//node liri.js movie-this 
 function movieThis(value) {
   if (value == null ) {
     value = "Mr. Nobody";
@@ -169,17 +155,16 @@ function movieThis(value) {
     "Plot of the movie                    :  " + JSON.parse(body).Plot,
     "Actors in the movie                  :  " + JSON.parse(body).Actors
     ].join("\n");
-      //  console.log(output);
+    
     saveFile(formattedData + divider);  
   }
 });
 
-
 }
 
-//read from file and return 
-// node liri.js do-what-it-says
-// There are three random files that be used to test. 
+//read from file and return based on action 
+//node liri.js do-what-it-says
+//There are three random.txt random1.txt random2.txt that be used to test. 
 function doWhatItSays() {
 
 // read random#.txt files as utf8
@@ -188,7 +173,7 @@ fs.readFile("random.txt", "utf8", function(error, data) {
   if (error) {
     return console.log(error);
   }
-  // We will then print the contents of data
+  //console random.txt line
   console.log(data);
   // Then split it by commas (to make it more readable)
   var dataArr = data.split(",");
@@ -197,7 +182,7 @@ fs.readFile("random.txt", "utf8", function(error, data) {
 
   switch(action) { 
     case "concert-this":
-      value = value.substr(1).slice(0, -1);   //Added to remove char from begining and end for concert search as without it search fails
+      value = value.substr(1).slice(0, -1);  //Added to remove char from begining and end for concert search as without it search fails
       concertThis(value);
       break;
     case "spotify-this-song":
@@ -210,7 +195,6 @@ fs.readFile("random.txt", "utf8", function(error, data) {
   };
 
 });
-
 
 }
 
